@@ -66,6 +66,7 @@ class App {
       this.delimiter.push(customDelimiter);
     }
     const tokens = this.makeCalculable(calculationString);
+    const result = tokens.reduce((x, y) => x + y);
   }
 }
 
