@@ -19,6 +19,7 @@ class App {
     const standard = new RegExp(`[${this.delimiter.join('')}]`);
     const tokens = calculationString.split(standard);
     this.validateCalculationString(tokens);
+    return tokens.map(el => Number(el));
   }
 
   validateCustomDelimiter(delimiter) {
@@ -64,7 +65,7 @@ class App {
       // 커스텀 구분자 사용
       this.delimiter.push(customDelimiter);
     }
-    this.makeCalculable(calculationString);
+    const tokens = this.makeCalculable(calculationString);
   }
 }
 
