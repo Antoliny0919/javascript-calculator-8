@@ -67,6 +67,7 @@ class App {
     }
     const tokens = this.makeCalculable(calculationString);
     const result = tokens.reduce((x, y) => x + y);
+    Console.print(`결과 : ${result}`);
   }
 }
 
