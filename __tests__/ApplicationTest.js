@@ -41,3 +41,21 @@ describe('문자열 계산기', () => {
     await expect(app.run()).rejects.toThrow('[ERROR]');
   });
 });
+
+describe('커스텀 구분자 입력 예외', () => {
+  test.each(['//5\\n152535', '//3nn\\n13nn23nn3'])('커스텀 숫자 구분자를 사용시 예외 발생', async (input) => {
+    mockQuestions([input]);
+
+    const app = new App();
+
+    await expect(app.run()).rejects.toThrow('[ERROR] 숫자는 커스텀 구분자로 사용할 수 없습니다.');
+  })
+
+  test.each(['//;;\\n1;;2;;3', '//-----\\n1-----5-----4'])('커스텀 문자열 구분자를 사용시 예외 발생', async (input) => {
+    mockQuestions([input]);
+
+    const app = new App();
+
+    await expect(app.run()).rejects.toThrow('[ERROR] 문자열은 커스텀 구분자로 사용할 수 없습니다.')
+  })
+})

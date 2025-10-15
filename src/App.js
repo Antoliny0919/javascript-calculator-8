@@ -6,19 +6,38 @@ class App {
     this.delimiter = [',', ':'];
   }
 
-  checkCustomDelimiter(value) {
+  getCustomDelimiter(value) {
     if (value.startsWith('//')) {
-      return true;
+      const [ delimiter, calculationString ] = value.slice(2,).split('\\n');
+      this.validateCustomDelimiter(delimiter);
+      return { 'customDelimiter': delimiter, 'calculationString': calculationString }
     }
-    return false;
+    return { 'customDelimiter': undefined, 'calculationString': value }
+  }
+
+  validateCustomDelimiter(delimiter) {
+    this.validateIsNotNumber(delimiter);
+    this.validateIsChar(delimiter);
+  }
+
+  validateIsNotNumber(value) {
+    if (/\d/.test(value)) {
+      throw new Error('[ERROR] 숫자는 커스텀 구분자로 사용할 수 없습니다.');
+    }
+  }
+
+  validateIsChar(value) {
+    if (value.length !== 1) {
+      throw new Error('[ERROR] 문자열은 커스텀 구분자로 사용할 수 없습니다.');
+    }
   }
 
   async run() {
     const input = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
-    if (this.checkCustomDelimiter(input)) {
+    const { customDelimiter, calculationString } = this.getCustomDelimiter(input);
+    if (customDelimiter) {
       // 커스텀 구분자 사용
-    } else {
-
+      this.delimiter.push(customDelimiter);
     }
   }
 }
