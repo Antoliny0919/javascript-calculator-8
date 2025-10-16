@@ -11,9 +11,9 @@ class App {
     if (value.startsWith('//')) {
       const [ delimiter, calculationString ] = value.slice(2,).split('\\n');
       this.validateCustomDelimiter(delimiter);
-      return { 'customDelimiter': delimiter, 'calculationString': calculationString }
+      return { 'customDelimiter': delimiter, 'calculationString': calculationString };
     }
-    return { 'customDelimiter': undefined, 'calculationString': value }
+    return { 'customDelimiter': undefined, 'calculationString': value };
   }
 
   makeCalculable(calculationString) {
