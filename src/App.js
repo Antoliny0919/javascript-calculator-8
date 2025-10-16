@@ -44,6 +44,10 @@ class App {
   }
 
   makeCalculable(calculationString) {
+    if (calculationString === "") {
+      return [];
+    }
+
     const standard = new RegExp(`[${this.delimiter.join('')}]`);
     const tokens = calculationString.split(standard);
     this.isValid(tokens, 'calculationString');
@@ -57,7 +61,7 @@ class App {
       this.delimiter.push(customDelimiter);
     }
     const tokens = this.makeCalculable(calculationString);
-    const result = tokens.reduce((x, y) => x + y);
+    const result = tokens.reduce((x, y) => x + y, 0);
     Console.print(MESSAGES.OUTPUT(result));
   }
 }
