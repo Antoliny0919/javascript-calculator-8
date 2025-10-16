@@ -1,4 +1,5 @@
 import { Console } from "@woowacourse/mission-utils";
+import { ERROR_MESSAGES, MESSAGES } from "./Constants";
 
 
 class App {
@@ -29,13 +30,13 @@ class App {
 
   validateIsNotNumber(value) {
     if (/\d/.test(value)) {
-      throw new Error('[ERROR] 숫자는 커스텀 구분자로 사용할 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_NUMBER);
     }
   }
 
   validateIsChar(value) {
     if (value.length !== 1) {
-      throw new Error('[ERROR] 문자열은 커스텀 구분자로 사용할 수 없습니다.');
+      throw new Error(ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_STRING);
     }
   }
 
@@ -47,19 +48,19 @@ class App {
   validateFormat(value) {
     // 배열 내 모든 요소가 숫자인지 확인
     if (!value.every(el => /^-?\d+$/.test(el))) {
-      throw new Error('[ERROR] 계산할 문자열이 잘못된 형식입니다.');
+      throw new Error(ERROR_MESSAGES.INVALID_FORMAT);
     }
   }
 
   validateIsAllPositive(value) {
     // 배열 내 모든 요소가 숫자인지 확인
     if (!value.every(el => Number(el) > 0)) {
-      throw new Error('[ERROR] 계산할 문자열은 양수만 가능합니다.');
+      throw new Error(ERROR_MESSAGES.INVALID_NEGATIVE_OR_ZERO);
     }
   }
 
   async run() {
-    const input = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
+    const input = await Console.readLineAsync(MESSAGES.INPUT);
     const { customDelimiter, calculationString } = this.getCustomDelimiter(input);
     if (customDelimiter) {
       // 커스텀 구분자 사용
@@ -67,7 +68,7 @@ class App {
     }
     const tokens = this.makeCalculable(calculationString);
     const result = tokens.reduce((x, y) => x + y);
-    Console.print(`결과 : ${result}`);
+    Console.print(MESSAGES.OUTPUT(result));
   }
 }
 
