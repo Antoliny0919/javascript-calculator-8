@@ -1,16 +1,43 @@
 import { Console } from "@woowacourse/mission-utils";
-import { ERROR_MESSAGES, MESSAGES } from "./Constants";
+import { ERROR_MESSAGES, MESSAGES } from "./Constants.js";
+import { RegexpValidator, LengthValidator, ArrayElementsValidator } from "./Validators.js";
 
 
 class App {
   constructor() {
     this.delimiter = [',', ':'];
+    this.validators = {
+      customDelimiter: [
+        new RegexpValidator(/\d/, ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_NUMBER),
+        new LengthValidator(0, 2, ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_STRING),
+      ],
+      calculationString: [
+        // 배열 내 모든 요소가 숫자인지 확인
+        new ArrayElementsValidator(
+          el => /^-?\d+$/.test(el),
+          ERROR_MESSAGES.INVALID_FORMAT,
+          true,
+        ),
+        // 배열 내 모든 요소가 양수인지 확인
+        new ArrayElementsValidator(
+          el => Number(el) > 0,
+          ERROR_MESSAGES.INVALID_NEGATIVE_OR_ZERO,
+          true,
+        ),
+      ]
+    }
+  }
+
+  isValid(value, key) {
+    for (const validators of this.validators[key]) {
+      validators.validate(value);
+    }
   }
 
   getCustomDelimiter(value) {
     if (value.startsWith('//')) {
       const [ delimiter, calculationString ] = value.slice(2,).split('\\n');
-      this.validateCustomDelimiter(delimiter);
+      this.isValid(delimiter, 'customDelimiter');
       return { 'customDelimiter': delimiter, 'calculationString': calculationString };
     }
     return { 'customDelimiter': undefined, 'calculationString': value };
@@ -19,44 +46,8 @@ class App {
   makeCalculable(calculationString) {
     const standard = new RegExp(`[${this.delimiter.join('')}]`);
     const tokens = calculationString.split(standard);
-    this.validateCalculationString(tokens);
+    this.isValid(tokens, 'calculationString');
     return tokens.map(el => Number(el));
-  }
-
-  validateCustomDelimiter(delimiter) {
-    this.validateIsNotNumber(delimiter);
-    this.validateIsChar(delimiter);
-  }
-
-  validateIsNotNumber(value) {
-    if (/\d/.test(value)) {
-      throw new Error(ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_NUMBER);
-    }
-  }
-
-  validateIsChar(value) {
-    if (value.length !== 1) {
-      throw new Error(ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_STRING);
-    }
-  }
-
-  validateCalculationString(value) {
-    this.validateFormat(value);
-    this.validateIsAllPositive(value);
-  }
-
-  validateFormat(value) {
-    // 배열 내 모든 요소가 숫자인지 확인
-    if (!value.every(el => /^-?\d+$/.test(el))) {
-      throw new Error(ERROR_MESSAGES.INVALID_FORMAT);
-    }
-  }
-
-  validateIsAllPositive(value) {
-    // 배열 내 모든 요소가 양수인지 확인
-    if (!value.every(el => Number(el) > 0)) {
-      throw new Error(ERROR_MESSAGES.INVALID_NEGATIVE_OR_ZERO);
-    }
   }
 
   async run() {
