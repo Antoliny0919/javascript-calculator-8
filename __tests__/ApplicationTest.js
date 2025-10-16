@@ -78,7 +78,7 @@ describe('커스텀 구분자 입력 예외', () => {
 
     await expect(app.run()).rejects.toThrow('[ERROR] 문자열은 커스텀 구분자로 사용할 수 없습니다.')
   })
-})
+});
 
 describe('계산할 문자열 입력 예외', () => {
   test.each(
@@ -89,13 +89,15 @@ describe('계산할 문자열 입력 예외', () => {
       ',1,2,3',
       '1:2:3:',
       ',1,2:3:',
-    ])('잘못된 형식의 문자열일때 예외 발생', async (input) => {
-      mockQuestions([input]);
+    ]
+  )('잘못된 형식의 문자열일때 예외 발생', async (input) => {
+    mockQuestions([input]);
 
-      const app = new App();
+    const app = new App();
 
-      await expect(app.run()).rejects.toThrow('[ERROR] 계산할 문자열이 잘못된 형식입니다.');
-    })
+    await expect(app.run()).rejects.toThrow('[ERROR] 계산할 문자열이 잘못된 형식입니다.');
+  })
+
   test.each(['1,-2,3', '0,1,2'])('계산할 대상이 양수가 아닌 문자열일때 예외 발생', async (input) => {
     mockQuestions([input]);
 
