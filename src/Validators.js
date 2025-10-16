@@ -65,18 +65,14 @@ export class ArrayElementsValidator {
    * 
    * @param {function} func - 검증에 사용할 함수
    * @param {string} message - 에러 메시지
-   * @param {boolean} reverse - 검증 결과 반대 전환
    */
-  constructor(func, message, reverse=false) {
+  constructor(func, message) {
     this.func = func;
     this.message = message;
-    this.reverse = reverse;
   }
 
   validate(arr) {
-    const result = arr.every(this.func);
-    const isInvalid = this.reverse ? !result : result;
-    if (isInvalid) {
+    if (!arr.every(this.func)) {
       throw new Error(this.message);
     }
   }
