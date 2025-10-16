@@ -54,7 +54,6 @@ class App {
     const input = await Console.readLineAsync(MESSAGES.INPUT);
     const { customDelimiter, calculationString } = this.getCustomDelimiter(input);
     if (customDelimiter) {
-      // 커스텀 구분자 사용
       this.delimiter.push(customDelimiter);
     }
     const tokens = this.makeCalculable(calculationString);
