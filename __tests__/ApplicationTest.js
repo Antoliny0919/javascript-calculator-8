@@ -40,6 +40,26 @@ describe('문자열 계산기', () => {
 
     await expect(app.run()).rejects.toThrow('[ERROR]');
   });
+
+  test.each(
+    [
+      ['1,2,3', '6'],
+      ['1:2:30', '33'],
+      ['5:100:30,70', '205'],
+      ['//;\\n10;20:30,40', '100'],
+      ['//+\\n5+4+3+2+1', '15'],
+      ['//Z\\n15Z25Z35Z45', '120'],
+      ['//구\\n1구2,3:4구5', '15'],
+      ['1000000000000000:200000,4000:90000000,100', '1000000090204100']
+    ]
+  )('유요한 입력 테스트', async(input, result) => {
+    mockQuestions([input]);
+    const logSpy = getLogSpy();
+    const app = new App();
+    await app.run();
+
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(`결과 : ${result}`));
+  })
 });
 
 describe('커스텀 구분자 입력 예외', () => {
