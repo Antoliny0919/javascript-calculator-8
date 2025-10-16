@@ -53,7 +53,7 @@ class App {
   }
 
   validateIsAllPositive(value) {
-    // 배열 내 모든 요소가 숫자인지 확인
+    // 배열 내 모든 요소가 양수인지 확인
     if (!value.every(el => Number(el) > 0)) {
       throw new Error(ERROR_MESSAGES.INVALID_NEGATIVE_OR_ZERO);
     }
