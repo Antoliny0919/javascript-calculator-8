@@ -55,7 +55,7 @@ describe('문자열 계산기', () => {
       ['', '0'],
       ['//;\\n', '0'],
     ]
-  )('유요한 입력 테스트', async(input, result) => {
+  )('유효한 입력 테스트', async(input, result) => {
     mockQuestions([input]);
     const logSpy = getLogSpy();
     const app = new App();
