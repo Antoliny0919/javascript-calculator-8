@@ -71,12 +71,18 @@ describe('커스텀 구분자 입력 예외', () => {
     await expect(app.run()).rejects.toThrow('[ERROR] 숫자는 커스텀 구분자로 사용할 수 없습니다.');
   })
 
-  test.each(['//;;\\n1;;2;;3', '//-----\\n1-----5-----4'])('커스텀 문자열 구분자를 사용시 예외 발생', async (input) => {
+  test.each(
+    [
+      '//;;\\n1;;2;;3',
+      '//-----\\n1-----5-----4',
+      '//\\n1:2:3',
+    ]
+  )('문자가 아닌 커스텀 구분자를 사용시 예외 발생', async (input) => {
     mockQuestions([input]);
 
     const app = new App();
 
-    await expect(app.run()).rejects.toThrow('[ERROR] 문자열은 커스텀 구분자로 사용할 수 없습니다.')
+    await expect(app.run()).rejects.toThrow('[ERROR] 커스텀 구분자는 한 글자 문자여야 합니다.')
   })
 });
 
