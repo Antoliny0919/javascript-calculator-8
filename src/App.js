@@ -26,7 +26,7 @@ class App {
     }
   }
 
-  isValid(value, key) {
+  runValidators(value, key) {
     for (const validators of this.validators[key]) {
       validators.validate(value);
     }
@@ -35,7 +35,7 @@ class App {
   getCustomDelimiter(value) {
     if (value.startsWith('//')) {
       const [ delimiter, calculationString ] = value.slice(2,).split('\\n');
-      this.isValid(delimiter, 'customDelimiter');
+      this.runValidators(delimiter, 'customDelimiter');
       return { 'customDelimiter': delimiter, 'calculationString': calculationString };
     }
     return { 'customDelimiter': undefined, 'calculationString': value };
@@ -48,7 +48,7 @@ class App {
 
     const standard = new RegExp(`[${this.delimiter.join('')}]`);
     const tokens = calculationString.split(standard);
-    this.isValid(tokens, 'calculationString');
+    this.runValidators(tokens, 'calculationString');
     return tokens.map(el => Number(el));
   }
 
