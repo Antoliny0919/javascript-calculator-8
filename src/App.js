@@ -26,6 +26,14 @@ class App {
     }
   }
 
+  addDelimiter(delimiter) {
+    let newDelimiter = delimiter;
+    if (newDelimiter === '\\') {
+      newDelimiter = '\\\\';
+    }
+    this.delimiter.push(newDelimiter);
+  }
+
   runValidators(value, key) {
     for (const validators of this.validators[key]) {
       validators.validate(value);
@@ -56,7 +64,7 @@ class App {
     const input = await Console.readLineAsync(MESSAGES.INPUT);
     const { customDelimiter, calculationString } = this.getCustomDelimiter(input);
     if (customDelimiter) {
-      this.delimiter.push(customDelimiter);
+      this.addDelimiter(customDelimiter);
     }
     const tokens = this.makeCalculable(calculationString);
     const result = tokens.reduce((x, y) => x + y, 0);
