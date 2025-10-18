@@ -1,10 +1,14 @@
 import { RegexpValidator, LengthValidator, ArrayElementsValidator } from './Validators';
 import { ERROR_MESSAGES } from './Constants';
 
+const DEFAULT_DELIMITER = [',', ':'];
+const CUSTOM_DELIMITER_PREFIX = '//';
+const CUSTOM_DELIMITER_SUFFIX = '\\n';
+
 class Calculator {
   constructor(input) {
     this.input = input;
-    this.delimiter = [',', ':'];
+    this.delimiter = [...DEFAULT_DELIMITER];
     this.validators = {
       customDelimiter: [
         new RegexpValidator(/\d/, ERROR_MESSAGES.INVALID_CUSTOM_DELIMITER_NUMBER),
@@ -40,8 +44,8 @@ class Calculator {
   }
 
   getCustomDelimiter(value) {
-    if (value.startsWith('//')) {
-      const [ delimiter, calculationString ] = value.slice(2,).split('\\n');
+    if (value.startsWith(CUSTOM_DELIMITER_PREFIX)) {
+      const [ delimiter, calculationString ] = value.slice(2,).split(CUSTOM_DELIMITER_SUFFIX);
       this.runValidators(delimiter, 'customDelimiter');
       return { 'customDelimiter': delimiter, 'calculationString': calculationString };
     }
