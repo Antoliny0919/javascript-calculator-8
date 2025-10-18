@@ -3,9 +3,9 @@ export const ERROR_MESSAGES = Object.freeze({
     INVALID_CUSTOM_DELIMITER_STRING: '[ERROR] 커스텀 구분자는 한 글자 문자여야 합니다.',
     INVALID_FORMAT: '[ERROR] 계산할 문자열이 잘못된 형식입니다.',
     INVALID_NEGATIVE_OR_ZERO: '[ERROR] 계산할 문자열은 양수만 가능합니다.',
-})
+});
 
 export const MESSAGES = Object.freeze({
     INPUT: '덧셈할 문자열을 입력해 주세요.\n',
     OUTPUT: (value) => `결과 : ${value}`,
-})
+});
